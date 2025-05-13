@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+
 // lớp sản phẩm
 class product
 {
@@ -8,33 +9,31 @@ public:
     double price;
     string type;
     int amount;
-    fstream product_list;
     // ham tao mac dinh
     product()
     {
-        name = " ";
+        name = "#";
         price = 0;
-        type = " ";
+        type = "#";
         amount = 0;
     }
     // hàm tạo
     product(string name, double price, string type, int amount)
     {
-        this->name = name;
-        this->price = price;
-        this->type = type;
-        this->amount = amount;
-        // ghi thông tin sản phẩm vào file
-        product_list.open("product_list.txt", ios::out | ios::app);
+
+        // mở file sản phẩm
+        fstream product_list("product_list.txt", ios::out | ios::app);
         if (product_list.is_open())
         {
-            product_list << left 
-                         << setw(10) << name << setw(10)  << price << setw(10) << setw(10) << type << setw(10) << amount << endl;
+            // ghi thông tin sản phẩm vào file
+            product_list << left
+                         << setw(10) << name << setw(10) << price << setw(10) << setw(10) << type << setw(10) << amount << endl;
         }
         else
         {
             cout << "Khong the mo file" << endl;
         }
+        product_list.close();
     };
     // ham them san pham
     void add_product()
@@ -52,37 +51,120 @@ public:
         cout << "Da them san pham thanh cong" << endl;
     }
 };
+
 // ham hien thi san pham
-void show_product(fstream &product_list)
+void show_product()
 {
-    //tao dao dien 
+
     cout << "========================================================" << endl;
     cout << "=                   CUA HANG TRANG SUC H&T             =" << endl;
     cout << "========================================================" << endl;
     cout << left
-         << setw(10) << "Ten" << setw(10) << "Gia" << setw(10) << "Loai" << setw(10) << "So luong" << endl;
+         << setw(10) << "STT" << setw(10) << "Ten" << setw(10) << "Gia" << setw(10) << "Loai" << setw(10) << "So luong" << endl;
     // mở file sản phẩm
-    product_list.open("product_list.txt", ios::in);
+    fstream product_list("product_list.txt", ios::in);
     if (product_list.is_open())
     {
         string line;
         getline(product_list, line);
-        cout << line << endl;
+        cout << 1 << "        " << line << endl;
+        int stt = 2;
         while (getline(product_list, line))
         {
-            cout << line << endl;
+            cout << stt << "        " << line << endl;
+            stt++;
         }
+    }
+    else
+    {
+        cout << "Khong tim thay file" << endl;
+    }
+    product_list.close();
+}
+
+void delete_product(int delete_line)
+{
+
+    ifstream product_list("product_list.txt");
+    ofstream temp("temp.txt");
+    if (product_list.is_open())
+    {
+        string line;
+        int count = 0;
+        while (getline(product_list, line))
+        {
+            count++;
+            if (count != delete_line)
+            {
+                temp << line << endl;
+            }
+        }
+
+        product_list.close(); //
+        temp.close();         //
+        remove("product_list.txt");
+        rename("temp.txt", "product_list.txt");
+      
+        cout << "Da xoa san pham STT " << delete_line << " thanh cong" << endl;
+        
     }
     else
     {
         cout << "Khong the mo file" << endl;
     }
-    product_list.close();
 }
+void menu_option()
+{
+    
+    product p1;
+    int choice;
+    do
+    {
+        // đăng nhập thành công hiện ra ADMIN PANEL
+        cout << "========================================================" << endl;
+        cout << "                        ADMIN PANEL                     " << endl;
+        cout << "========================================================" << endl;
+        cout << left
+             << setw(10) << "1. Them san pham" << endl
+             << setw(10) << "2. Xoa san pham" << endl
+             << setw(10) << "3. Danh sach san pham" << endl
+             << setw(10) << "0. Thoat" << endl;
+        cout << "--------------------------------------------------------" << endl;
+        // Nhập lựa chọn từ người dùng
+
+        cout << "Nhap mot lua chon: ";
+        cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            p1.add_product();
+            show_product();
+            break;
+        case 2:
+            int delete_line;
+            show_product();
+            cout << "Nhap STT san pham can xoa" << endl;
+            cin >> delete_line;
+            delete_product(delete_line);
+            show_product();
+            break;
+        case 3:
+            show_product();
+            break;
+        case 0:
+            cout << "Thoat" << endl;
+            break;
+        default:
+            cout << "Lua chon khong hop le!" << endl;
+        }
+
+    } while (choice != 0);
+
+}
+
 int main()
 {
-    // tạo đối tượng sản phẩm
-    product p1;
+
     // check tài khoản admin từ file
     fstream check_admin, product_list;
     check_admin.open("check_admin.txt", ios::in);
@@ -110,52 +192,12 @@ int main()
                 cout << "Sai tai khoan hoac mat khau. Vui long thu lai!" << endl;
             }
         } while (enter_id != id || enter_pass != pass);
-
-        // đăng nhập thành công hiện ra ADMIN PANEL
-        cout << "========================================================" << endl;
-        cout << "                        ADMIN PANEL                     " << endl;
-        cout << "========================================================" << endl;
-        cout << left
-             << setw(10) << "1. Them san pham"      << endl
-             << setw(10) << "2. Chinh sua san pham" << endl
-             << setw(10) << "3. Xoa san pham"       << endl
-             << setw(10) << "4. Danh sach san pham" << endl
-             << setw(10) << "0. Thoat"              << endl;
-        cout << "--------------------------------------------------------" << endl;
-        // Nhập lựa chọn từ người dùng
-        
-        int choice;
-        do{
-        cout << "Nhap mot lua chon: ";
-        cin >> choice;
-        switch (choice)
-        {
-            case 1:
-            cout << "Ban da chon 1" << endl;
-            p1.add_product();
-            break;
-        case 2:
-            cout << "Ban da chon 2" << endl;
-            break;
-        case 3:
-            cout << "Ban da chon 3" << endl;
-            break;
-        case 4:
-            cout << "Ban da chon 4" << endl;
-            show_product(product_list);
-            break;
-        case 0:
-            cout<<  "Thoat"         << endl;
-        default:
-            cout << "Lua chon khong hop le!" << endl;
-        }
-    
-        }while (choice < 0 || choice > 4);
-
-}
-else
-{
-    cout << "Khong tim thay file" << endl;
-}
-check_admin.close();
+        // hiện ra menu tùy chọn
+        menu_option();
+    }
+    else
+    {
+        cout << "Khong tim thay file" << endl;
+    }
+    check_admin.close();
 }
