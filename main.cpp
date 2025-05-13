@@ -1,6 +1,5 @@
 #include <bits/stdc++.h>
 using namespace std;
-
 // lớp sản phẩm
 class product
 {
