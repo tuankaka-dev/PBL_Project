@@ -1,6 +1,5 @@
 #include <bits/stdc++.h>
 using namespace std;
-
 // lớp sản phẩm
 class product
 {
@@ -9,7 +8,15 @@ public:
     double price;
     string type;
     int amount;
-
+    fstream product_list;
+    // ham tao mac dinh
+    product()
+    {
+        name = " ";
+        price = 0;
+        type = " ";
+        amount = 0;
+    }
     // hàm tạo
     product(string name, double price, string type, int amount)
     {
@@ -17,14 +24,67 @@ public:
         this->price = price;
         this->type = type;
         this->amount = amount;
+        // ghi thông tin sản phẩm vào file
+        product_list.open("product_list.txt", ios::out | ios::app);
+        if (product_list.is_open())
+        {
+            product_list << left 
+                         << setw(10) << name << setw(10)  << price << setw(10) << setw(10) << type << setw(10) << amount << endl;
+        }
+        else
+        {
+            cout << "Khong the mo file" << endl;
+        }
     };
+    // ham them san pham
+    void add_product()
+    {
+        // nhap thông tin sản phẩm
+        cout << "nhap san pham" << endl;
+        cin >> name;
+        cout << "nhap gia san pham" << endl;
+        cin >> price;
+        cout << "nhap loai san pham" << endl;
+        cin >> type;
+        cout << "nhap so luong san pham" << endl;
+        cin >> amount;
+        product(name, price, type, amount);
+        cout << "Da them san pham thanh cong" << endl;
+    }
 };
-
+// ham hien thi san pham
+void show_product(fstream &product_list)
+{
+    //tao dao dien 
+    cout << "========================================================" << endl;
+    cout << "=                   CUA HANG TRANG SUC H&T             =" << endl;
+    cout << "========================================================" << endl;
+    cout << left
+         << setw(10) << "Ten" << setw(10) << "Gia" << setw(10) << "Loai" << setw(10) << "So luong" << endl;
+    // mở file sản phẩm
+    product_list.open("product_list.txt", ios::in);
+    if (product_list.is_open())
+    {
+        string line;
+        getline(product_list, line);
+        cout << line << endl;
+        while (getline(product_list, line))
+        {
+            cout << line << endl;
+        }
+    }
+    else
+    {
+        cout << "Khong the mo file" << endl;
+    }
+    product_list.close();
+}
 int main()
 {
+    // tạo đối tượng sản phẩm
+    product p1;
     // check tài khoản admin từ file
-
-    fstream check_admin;
+    fstream check_admin, product_list;
     check_admin.open("check_admin.txt", ios::in);
     if (check_admin.is_open())
     {
@@ -72,6 +132,7 @@ int main()
         {
             case 1:
             cout << "Ban da chon 1" << endl;
+            p1.add_product();
             break;
         case 2:
             cout << "Ban da chon 2" << endl;
@@ -81,6 +142,7 @@ int main()
             break;
         case 4:
             cout << "Ban da chon 4" << endl;
+            show_product(product_list);
             break;
         case 0:
             cout<<  "Thoat"         << endl;
