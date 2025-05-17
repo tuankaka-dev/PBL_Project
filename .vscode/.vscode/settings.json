@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "iostream": "cpp",
+        "chrono": "cpp",
+        "text_encoding": "cpp",
+        "typeindex": "cpp",
+        "typeinfo": "cpp",
+        "string": "cpp",
+        "istream": "cpp",
+        "fstream": "cpp",
+        "iomanip": "cpp"
+    }
+}
