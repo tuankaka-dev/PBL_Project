@@ -40,7 +40,7 @@ public:
         // nhap thông tin sản phẩm
         cin.ignore();
         cout << "nhap san pham" << endl;
-        getline(cin,name);
+        getline(cin, name);
         cout << "nhap gia san pham" << endl;
         cin >> price;
         cout << "nhap loai san pham" << endl;
