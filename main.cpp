@@ -1,13 +1,22 @@
 #include <bits/stdc++.h>
+#include <windows.h>
 using namespace std;
 // lớp sản phẩm
+void clrscr() {
+    system("cls");
+}
+void setColor(int color) {
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+}
+
 class product
 {
-public:
+private:
     string name;
     double price;
     string type;
     int amount;
+public:
     // ham tao mac dinh
     product()
     {
@@ -103,15 +112,13 @@ void delete_product(int delete_line)
         temp.close();         //
         remove("product_list.txt");
         rename("temp.txt", "product_list.txt");
-      
-        cout << "Da xoa san pham STT " << delete_line << " thanh cong" << endl;
-        
     }
     else
     {
-        cout << "Khong the mo file" << endl;
+      setColor(14); cout << "Khong the mo file" << endl; setColor(7);
     }
 }
+
 void menu_option()
 {
     
@@ -119,10 +126,13 @@ void menu_option()
     int choice;
     do
     {
+        
         // đăng nhập thành công hiện ra ADMIN PANEL
+        setColor(14);
         cout << "========================================================" << endl;
-        cout << "                        ADMIN PANEL                     " << endl;
+        cout << "                     ADMIN PANEL                        " << endl;
         cout << "========================================================" << endl;
+        setColor(7);
         cout << left
              << setw(10) << "1. Them san pham" << endl
              << setw(10) << "2. Xoa san pham" << endl
@@ -131,30 +141,38 @@ void menu_option()
         cout << "--------------------------------------------------------" << endl;
         // Nhập lựa chọn từ người dùng
 
-        cout << "Nhap mot lua chon: ";
+       setColor(14); cout << "Nhap mot lua chon: "; setColor(7);
         cin >> choice;
         switch (choice)
         {
         case 1:
+            clrscr();
             p1.add_product();
+            clrscr();
             show_product();
+            
             break;
         case 2:
+            clrscr();
             int delete_line;
             show_product();
-            cout << "Nhap STT san pham can xoa" << endl;
+           setColor(2); cout << "Nhap STT san pham can xoa" << endl; setColor(7);
             cin >> delete_line;
             delete_product(delete_line);
             show_product();
+            setColor(2);cout << "Da xoa san pham STT " << delete_line << " thanh cong" << endl; setColor(7);
+            
             break;
         case 3:
+        clrscr();
             show_product();
+            
             break;
         case 0:
-            cout << "Thoat" << endl;
+            setColor(2); cout << "Thoat" << endl; setColor(7);
             break;
         default:
-            cout << "Lua chon khong hop le!" << endl;
+            setColor(2); cout << "Lua chon khong hop le!" << endl; setColor(7);
         }
 
     } while (choice != 0);
@@ -174,17 +192,19 @@ int main()
         getline(check_admin, pass);
         do
         {
+            setColor(14);
             cout << "========================================================" << endl;
             cout << "                    DANG NHAP ADMIN                     " << endl;
             cout << "========================================================" << endl;
+            setColor(7);
             cout << left << setw(20) << "Nhap tai khoan: ";
             cin >> enter_id;
             cout << left << setw(20) << "Nhap mat khau: ";
             cin >> enter_pass;
-
+            clrscr();
             if (enter_id == id && enter_pass == pass)
             {
-                cout << "Dang nhap thanh cong, xin chao " << enter_id << "!" << endl;
+              setColor(2);  cout << "Dang nhap thanh cong, xin chao " << enter_id << "!" << endl;setColor(7);
             }
             else
             {
@@ -192,11 +212,12 @@ int main()
             }
         } while (enter_id != id || enter_pass != pass);
         // hiện ra menu tùy chọn
+        
         menu_option();
     }
     else
     {
-        cout << "Khong tim thay file" << endl;
+        setColor(2); cout << "Khong tim thay file" << endl; setColor(7);
     }
     check_admin.close();
 }
