@@ -1,5 +1,5 @@
-DongHo     3500      Vang       3
-VongCo     980       Da         6
-VongChan   430       Da         15
-gia       1         1         1         
-gia huy   1         1         1         
+1         1         1         1         
+1         1.2       1         1         
+1         1.2       1         1         
+1         1         1         1         
+1         1.2       1         1         
