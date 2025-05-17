@@ -16,9 +16,11 @@ private:
     string name;
     double price;
     string type;
+    string material;
     int amount;
     string check_price;
     string check_amount;
+
 public:
     // ham tao mac dinh
     product()
@@ -26,10 +28,11 @@ public:
         name = "#";
         price = 0;
         type = "#";
+        material = "#";
         amount = 0;
     }
     // hàm tạo
-    product(string name, double price, string type, int amount)
+    product(string name, double price, string type, string material, int amount)
     {
 
         // mở file sản phẩm
@@ -38,7 +41,7 @@ public:
         {
             // ghi thông tin sản phẩm vào file
             product_list << left
-                         << setw(10) << name << setw(10) << price << setw(10) << setw(10) << type << setw(10) << amount << endl;
+                         << setw(10) << name << setw(10) << price << setw(10) << setw(10) << type << setw(10) << material << setw(10) << amount << endl;
         }
         else
         {
@@ -51,8 +54,9 @@ public:
     {
         // nhap thông tin sản phẩm
         cin.ignore();
-        cout << "nhap san pham" << endl;
+        cout << "nhap ten san pham" << endl;
         getline(cin, name);
+
         cout << "nhap gia san pham" << endl;
         do
         {
@@ -63,23 +67,27 @@ public:
             }
         } while (check(check_price) == false);
         price = stof(check_price);
-        cout << "nhap loai san pham" << endl;
-        cin >> type;
+        cin.ignore();
+        cout << "nhap chung loai san pham" << endl;
+        getline(cin, type);
+
+        cout << "nhap chat lieu san pham" << endl;
+        getline(cin, material);
         cout << "nhap so luong san pham" << endl;
         do
         {
             cin >> check_amount;
-            if (check(check_amount,1) == false)
+            if (check(check_amount, 1) == false)
             {
                 cout << "So luong khong hop le, vui long nhap lai" << endl;
             }
-        } while (check(check_amount,1) == false);
+        } while (check(check_amount, 1) == false);
         amount = stoi(check_amount);
-        product(name, price, type, amount);
+        product(name, price, type, material, amount);
         cout << "Da them san pham thanh cong" << endl;
     }
     bool check(string check_price);
-    bool check(string check_amount,int);
+    bool check(string check_amount, int);
 };
 // ham hien thi san pham
 void show_product()
@@ -89,7 +97,7 @@ void show_product()
     cout << "=                   CUA HANG TRANG SUC H&T             =" << endl;
     cout << "========================================================" << endl;
     cout << left
-         << setw(10) << "STT" << setw(10) << "Ten" << setw(10) << "Gia" << setw(10) << "Loai" << setw(10) << "So luong" << endl;
+         << setw(10) << "STT" << setw(10) << "Ten SP" << setw(10) << "Gia" << setw(10) << "Loai" << setw(10) << "Chat Lieu" << setw(10) << "So luong" << endl;
     // mở file sản phẩm
     fstream product_list("product_list.txt", ios::in);
     if (product_list.is_open())
@@ -142,7 +150,7 @@ void delete_product(int delete_line)
     }
 }
 
-void menu_option()
+void admin_menu_option()
 {
 
     product p1;
@@ -210,6 +218,46 @@ void menu_option()
 
     } while (choice != 0);
 }
+void guest_admin_option(){
+    int choice;
+    do
+    {
+
+        // đăng nhập thành công hiện ra ADMIN PANEL
+        setColor(14);
+        cout << "========================================================" << endl;
+        cout << "                    Danh Muc San Pham                   " << endl;
+        cout << "========================================================" << endl;
+        setColor(7);
+        cout << left
+             << setw(10) << "1. Nhan " << endl
+             << setw(10) << "2. Vong Tay" << endl
+             << setw(10) << "3. Day Chuyen" << endl
+             << setw(10) << "0. Thoat" << endl;
+        cout << "--------------------------------------------------------" << endl;
+        // Nhập lựa chọn từ người dùng
+
+        setColor(14);
+        cout << "Nhap mot lua chon: ";
+        setColor(7);
+        cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            
+        case 0:
+            setColor(2);
+            cout << "Thoat" << endl;
+            setColor(7);
+            break;
+        default:
+            setColor(2);
+            cout << "Lua chon khong hop le!" << endl;
+            setColor(7);
+        }
+
+    } while (choice != 0);
+}
 // kiểm tra giá sản phẩm
 bool product::check(string check_price)
 {
@@ -234,7 +282,7 @@ bool product::check(string check_price)
     return true;
 }
 // kiểm tra số lượng sản phẩm
-bool product::check(string check_amount,int)
+bool product::check(string check_amount, int)
 {
     for (char c : check_amount)
     {
@@ -248,8 +296,28 @@ bool product::check(string check_amount,int)
 }
 int main()
 {
+    int login_type;
+    // tài khoản guest
+    setColor(14);
+    cout << left << setw(20) << "Chon cach dang nhap" << endl;
+    cout << left << setw(20) << "1. Guest" << endl;
+    cout << left << setw(20) << "2. Admin" << endl;
 
-    // check tài khoản admin từ file
+    cout << "Nhap mot lua chon: ";
+    setColor(7);
+    do
+    {
+        cin >> login_type;
+        if (login_type != 1 && login_type != 2)
+        {
+            setColor(14);
+            cout << "Loai dang nhap khong hop le. Vui long nhap lai" << endl;
+            setColor(7);
+        }
+    } while (login_type != 1 && login_type != 2);
+    if (login_type == 2)
+    {
+        // check tài khoản admin khi đăng nhập từ file
     fstream check_admin, product_list;
     check_admin.open("check_admin.txt", ios::in);
     if (check_admin.is_open())
@@ -261,9 +329,10 @@ int main()
         {
             setColor(14);
             cout << "========================================================" << endl;
-            cout << "                    DANG NHAP ADMIN                     " << endl;
+            cout << "                       DANG NHAP                     " << endl;
             cout << "========================================================" << endl;
             setColor(7);
+
             cout << left << setw(20) << "Nhap tai khoan: ";
             cin >> enter_id;
             cout << left << setw(20) << "Nhap mat khau: ";
@@ -282,7 +351,7 @@ int main()
         } while (enter_id != id || enter_pass != pass);
         // hiện ra menu tùy chọn
 
-        menu_option();
+        admin_menu_option();
     }
     else
     {
@@ -291,4 +360,13 @@ int main()
         setColor(7);
     }
     check_admin.close();
+    }
+    else
+    {
+        setColor(2);
+                cout << "Dang nhap thanh cong, xin chao Guest!"<< endl;
+                setColor(7);
+        guest_admin_option();
+    }
+    
 }

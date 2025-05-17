@@ -1,5 +1,8 @@
-1         1         1         1         
 1         1.2       1         1         
 1         1.2       1         1         
 1         1         1         1         
 1         1.2       1         1         
+taun      999       2         23        
+habita    299       vong tay  kim cuong 2         
+habita      299         vong co     vang        1           
+dang cap  299       vang      vang      9         
